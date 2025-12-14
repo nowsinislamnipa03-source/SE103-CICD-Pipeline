@@ -1,0 +1,46 @@
+name: C-Project CI/CD Pipeline
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+  
+    permissions:
+      contents: write
+
+    steps:
+    - name: 1. Source: Checkout code
+      uses: actions/checkout@v4
+
+  
+    - name: 2. Build: Compile C program
+      run: make all
+    - name: 3. Test: Run automated tests
+      run: make test
+
+    
+    - name: 4. Package: Upload the executable artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: c-executable-artifact
+        path: main 
+    - name: 5. Simulated Deploy: Log secure variable
+      env:
+        DEPLOYMENT_API_KEY: ${{ secrets.DEPLOYMENT_API_KEY }} 
+      run: |
+        echo "--- Artifact Reuse Check (Build once, deploy many) ---"
+  
+        echo "Running the Build-once artifact:"
+        ./main
+
+        echo "--- Secure Logging ---"
+        echo "Attempting deployment using API Key..."
+    
+        echo "API Key received from secrets management:"
+        echo "API_KEY_USED=${DEPLOYMENT_API_KEY}"
+        echo "Deployment simulation finished."
