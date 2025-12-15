@@ -16,7 +16,7 @@ jobs:
     steps:
     
     - name: 1. Source: Checkout code
-      uses: actions/checkout@v4
+        uses: actions/checkout@v4
     
     - name: Install necessary tools (gcc, make)
       run: |
@@ -30,7 +30,7 @@ jobs:
       run: make test
       
     - name: 4. Package: Upload the executable artifact
-      uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
       with:
         name: c-executable-artifact
         path: main
